@@ -1,16 +1,3 @@
-# Basic verion
-
-# For i = 1 to 100
-# Play fizzbuzz
-# Print the number
-# If divisible by 3, fizz
-# If divisible by 5, buzz
-# If both, fizzbuzz
-
-# Advanced
-# Customize range
-# Input for fizz and buzz
-
 # Set the values of the constants
 
 yes = "Y"
@@ -23,8 +10,8 @@ reset = "Reset"
 invalid = "Invalid input!\n"
 
 yes_no = "(" + yes + "/" + no + ")"
-start_range = "(" + str(min_range) + "-" + str(max_range -1) + ")";
-end_range = "(" + str(min_range) + "-" + str(max_range) + ")";
+start_range = "(" + str(min_range) + "-" + str(max_range - 1) + ")"
+end_range = "(" + str(min_range) + "-" + str(max_range) + ")"
 
 question_range = "Would you like to set the range " + yes_no + "?\n"
 question_start = "What number would you like to start from " + start_range + "?\n"
@@ -111,4 +98,3 @@ for i in range(begin, end + 1):
         print(str_b)
     else:
         print(i)
-
