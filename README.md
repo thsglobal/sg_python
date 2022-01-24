@@ -1,1 +1,3 @@
-# sg_python
+# Python test code
+
+Code written to learn python.
