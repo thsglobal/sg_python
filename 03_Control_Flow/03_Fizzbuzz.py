@@ -1,11 +1,21 @@
 import math
 
 # Set the values of the constants
-yes = "Y"
-no = "N"
-
 min_range = 1
 max_range = 10000
+
+default_begin = 1
+default_end = 100
+
+default_fizz = "Fizz"
+default_buzz = "Buzz"
+
+default_first = 3
+default_second = 5
+
+# Set the text to be displayed to the user
+yes = "Y"
+no = "N"
 
 reset = "Reset"
 invalid = "Invalid input!\n"
@@ -14,114 +24,111 @@ yes_no = "(" + yes + "/" + no + ")"
 start_range = "(" + str(min_range) + "-" + str(max_range - 1) + ")"
 end_range = "(" + str(min_range) + "-" + str(max_range) + ")"
 
-question_range = "Would you like to set the range " + yes_no + "?\n"
+confirm_range = "Would you like to set the range " + yes_no + "?\n"
 question_start = "What number would you like to start from " + start_range + "?\n"
 question_end = "What number would you like to end " + end_range + "?\n"
 
-question_words = "Would you like to set the magic words " + yes_no + "?\n"
+confirm_words = "Would you like to set the magic words " + yes_no + "?\n"
 question_fizz = "What would you like the first word to be?\n"
 question_buzz = "What would you like the second word to be?\n"
 
-question_primes = "Would you like to set the magic numbers " + yes_no + "?\n"
+confirm_primes = "Would you like to set the magic numbers " + yes_no + "?\n"
 question_first = "What would you like the first number to be?\n"
 question_second = "What would you like the second number to be?\n"
 
-# Set the initial values of the variables
-num_f = 3
-num_b = 5
 
-str_f = "Fizz"
-str_b = "Buzz"
+# Define useful condition checks
+def is_string(answer: str) -> bool:
+    return answer.isalpha()
 
-begin = 1
-end = 100
 
-# Ask for a custom range
-ans = input(question_range)
-while ans != yes and ans != no:
-    ans = input(invalid + question_range)
+def is_number(answer: str) -> bool:
+    return answer.isdigit()
 
-# Set the custom range
-if ans == yes:
-    # Set the start
-    ans = input(question_start)
-    if ans.isdigit():
-        if int(ans) < min_range or int(ans) > max_range - 1:
-            ans = reset
-    while not ans.isdigit():
-        ans = input(invalid + question_start)
-        if ans.isdigit():
-            if int(ans) < min_range or int(ans) > max_range - 1:
-                ans = reset
-    begin = int(ans)
 
-    # Set the end
-    ans = input(question_end)
-    if ans.isdigit():
-        if int(ans) < min_range or int(ans) > max_range or int(ans) < begin:
-            ans = reset
-    while not ans.isdigit():
-        ans = input(invalid + question_end)
-        if ans.isdigit():
-            if int(ans) < min_range or int(ans) > max_range or int(ans) < begin:
-                ans = reset
-    end = int(ans)
+def is_yes_no(answer: str) -> bool:
+    return answer == yes or answer == no
 
-# Ask for a custom fizzbuzz words
-ans = input(question_words)
-while ans != yes and ans != no:
-    ans = input(invalid + question_words)
 
-# Set custom fizzbuzz words
-if ans == yes:
-    # Set the value of fizz
-    ans = input(question_fizz)
-    while not ans.isalpha():
-        ans = input(invalid + question_fizz)
-    str_f = ans
+# Helper function to ask a question to the user
+def ask_question(input_func, question, condition) -> str:
+    answer = input_func(question)
+    while not condition(answer):
+        answer = input_func(invalid + question)
+    return answer
 
-    # Set the value of buzz
-    ans = input(question_buzz)
-    while not ans.isalpha():
-        ans = input(invalid + question_buzz)
-    str_b = ans
 
-# Ask for a custom fizzbuzz numbers
-ans = input(question_primes)
-while ans != yes and ans != no:
-    ans = input(invalid + question_primes)
+# Helper function to ask a yes-no question to the user
+def ask_confirm(question: str) -> bool:
+    return ask_question(input, question, is_yes_no) == yes
 
-# Set custom fizzbuzz numbers
-if ans == yes:
-    # Set the first number
-    ans = input(question_first)
-    while not ans.isdigit():
-        ans = input(invalid + question_first)
-    num_f = int(ans)
 
-    # Set the end
-    ans = input(question_second)
-    if ans.isdigit():
-        if math.gcd(int(ans), num_f) != 1:
-            ans = reset
-    while not ans.isdigit():
-        ans = input(invalid + question_second)
-        if ans.isdigit():
-            if math.gcd(int(ans), num_f) != 1:
-                ans = reset
-    num_b = int(ans)
+# Function for setting the custom range
+def set_range():
+    # Internal helper function for asking for a value in a range
+    def input_range(question: str, _lower: int, _upper: int):
+        answer = input(question)
+        if answer.isdigit():
+            if int(answer) < _lower or int(answer) > _upper:
+                answer = reset
+        return answer
 
-# Find the FizzBuzz numbers
-num_fb = num_f * num_b
-str_fb = str_f + str_b
+    if ask_confirm(confirm_range):
+        def input_start(question: str):
+            return input_range(question, min_range, max_range - 1)
+        lower = int(ask_question(input_start, question_start, is_number))
 
-# Play FizzBuzz with the current values of the variables
-for i in range(begin, end + 1):
-    if i % num_fb == 0:
-        print(str_fb)
-    elif i % num_f == 0:
-        print(str_f)
-    elif i % num_b == 0:
-        print(str_b)
+        def input_end(question: str):
+            return input_range(question, lower, max_range)
+        upper = int(ask_question(input_end, question_end, is_number))
+        return lower,upper
     else:
-        print(i)
+        return default_begin, default_end
+
+
+# Function for setting custom fizzbuzz words
+def set_words():
+    if ask_confirm(confirm_words):
+        return ask_question(input, question_fizz, is_string), ask_question(input, question_buzz, is_string)
+    else:
+        return default_fizz, default_buzz
+
+
+# Function for setting custom fizzbuzz numbers
+def set_primes():
+    if ask_confirm(confirm_primes):
+        first = int(ask_question(input, question_first, is_number))
+
+        def input_second(question: str):
+            answer = input(question)
+            if answer.isdigit():
+                if math.gcd(int(answer), first) != 1:
+                    answer = reset
+            return answer
+        second = int(ask_question(input_second, question_first, is_number))
+        return first, second
+    else:
+        return default_first, default_second
+
+
+# Function for playing fizzbuzz
+def play_fizzbuzz():
+    begin, end = set_range()
+    fizz, buzz = set_words()
+    num_f, num_b = set_primes()
+    num_fb = num_f * num_b
+    fizzbuzz = fizz + buzz
+
+    for i in range(begin, end + 1):
+        if i % num_fb == 0:
+            print(fizzbuzz)
+        elif i % num_f == 0:
+            print(fizz)
+        elif i % num_b == 0:
+            print(buzz)
+        else:
+            print(i)
+
+
+# Play a game of fizzbuzz
+play_fizzbuzz()
