@@ -65,3 +65,20 @@ print(len(list_in_tuple))
 print(list_in_tuple[0][-1])
 list_in_tuple[0][-1] = 4
 print(list_in_tuple[0])
+
+
+# Split text into list
+text = "Sample text"
+text_list = text.split(" ")
+
+print(text_list, type(text_list))
+csv = "12, 235, 3456, 456, 67, 78"
+print(csv.split(","))
+
+# Join list into text
+
+print("*".join(text_list))
+
+arr = [2, 3, 52, 324, 21, 35]
+
+print(sorted(arr))
