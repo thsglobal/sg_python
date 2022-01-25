@@ -1,5 +1,6 @@
-# Set the values of the constants
+import math
 
+# Set the values of the constants
 yes = "Y"
 no = "N"
 
@@ -21,8 +22,11 @@ question_words = "Would you like to set the magic words " + yes_no + "?\n"
 question_fizz = "What would you like the first word to be?\n"
 question_buzz = "What would you like the second word to be?\n"
 
-# Set the initial values of the variables
+question_primes = "Would you like to set the magic numbers " + yes_no + "?\n"
+question_first = "What would you like the first number to be?\n"
+question_second = "What would you like the second number to be?\n"
 
+# Set the initial values of the variables
 num_f = 3
 num_b = 5
 
@@ -41,24 +45,24 @@ while ans != yes and ans != no:
 if ans == yes:
     # Set the start
     ans = input(question_start)
-    if ans.isnumeric():
+    if ans.isdigit():
         if int(ans) < min_range or int(ans) > max_range - 1:
             ans = reset
-    while not ans.isnumeric():
+    while not ans.isdigit():
         ans = input(invalid + question_start)
-        if ans.isnumeric():
+        if ans.isdigit():
             if int(ans) < min_range or int(ans) > max_range - 1:
                 ans = reset
     begin = int(ans)
 
     # Set the end
     ans = input(question_end)
-    if ans.isnumeric():
+    if ans.isdigit():
         if int(ans) < min_range or int(ans) > max_range or int(ans) < begin:
             ans = reset
-    while not ans.isnumeric():
+    while not ans.isdigit():
         ans = input(invalid + question_end)
-        if ans.isnumeric():
+        if ans.isdigit():
             if int(ans) < min_range or int(ans) > max_range or int(ans) < begin:
                 ans = reset
     end = int(ans)
@@ -82,13 +86,36 @@ if ans == yes:
         ans = input(invalid + question_buzz)
     str_b = ans
 
-# Find the FizzBuzz numbers
+# Ask for a custom fizzbuzz numbers
+ans = input(question_primes)
+while ans != yes and ans != no:
+    ans = input(invalid + question_primes)
 
+# Set custom fizzbuzz numbers
+if ans == yes:
+    # Set the first number
+    ans = input(question_first)
+    while not ans.isdigit():
+        ans = input(invalid + question_first)
+    num_f = int(ans)
+
+    # Set the end
+    ans = input(question_second)
+    if ans.isdigit():
+        if math.gcd(int(ans), num_f) != 1:
+            ans = reset
+    while not ans.isdigit():
+        ans = input(invalid + question_second)
+        if ans.isdigit():
+            if math.gcd(int(ans), num_f) != 1:
+                ans = reset
+    num_b = int(ans)
+
+# Find the FizzBuzz numbers
 num_fb = num_f * num_b
 str_fb = str_f + str_b
 
 # Play FizzBuzz with the current values of the variables
-
 for i in range(begin, end + 1):
     if i % num_fb == 0:
         print(str_fb)
