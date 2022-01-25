@@ -27,9 +27,10 @@ print("\nQ1b\n")
 
 # A1b:
 
-
+# Two equivalent returns, more efficient not to use previous function
 def is_factor(num1: int, num2: int) -> bool:
-    return num1 % num2 == 0 or num2 % num1 == 0
+    return num2 in divisors_of(num1)
+    # return num1 % num2 == 0 or num2 % num1 == 0
 
 
 print(is_factor(2, 12))
