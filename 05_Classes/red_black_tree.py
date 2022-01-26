@@ -6,16 +6,28 @@ class RedBlackTree:
             self.insert(value)
 
     def print_tree(self):
-        i = 0
-        frontier = [(self.root, i)]
+        frontier = [self.root]
+        explored =[]
         flag = True
         while flag:
             flag = False
             buffer = []
-            for node, index in frontier:
-                if not node:
+            for node in frontier:
+                if node:
                     flag = True
-
+                    buffer.append(node.left)
+                    buffer.append(node.right)
+                else:
+                    buffer.append(None)
+                    buffer.append(None)
+            if flag:
+                explored.append(frontier)
+            frontier = buffer
+        width = len(explored[-1])
+        height = len(explored)
+        for i in range(height):
+            tabs = int(width * (0.5 ** (i + 1))) + 1
+            print(("\t" * tabs) + ("\t" * tabs).join(map(str,explored[i])))
 
     def search(self, value):
         return self.root.binary_search(value)
@@ -53,6 +65,9 @@ class Node:
         self.right = None
         self.is_black = False
 
+    def __str__(self):
+        return str(self.value)
+
     def binary_search(self,value):
         if self.value == value:
             return True
@@ -79,6 +94,8 @@ class Node:
 
 
 if __name__ == "__main__":  # Only runs if this is the file being run, useful for tests
+    rbtree = RedBlackTree(5, 2, 7, 1, 3, 6, 8)
+    rbtree.print_tree()
     print("Hello World")
 else:
     print("foobar")
