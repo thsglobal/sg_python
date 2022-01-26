@@ -81,7 +81,8 @@ def set_range():
         def input_end(question: str):
             return input_range(question, lower, max_range)
         upper = int(ask_question(input_end, question_end, is_number))
-        return lower,upper
+
+        return lower, upper
     else:
         return default_begin, default_end
 
