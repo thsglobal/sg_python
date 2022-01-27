@@ -1,4 +1,5 @@
 # WIP
+
 class RedBlackTree:
     def __init__(self, *values):
         self.root = None
