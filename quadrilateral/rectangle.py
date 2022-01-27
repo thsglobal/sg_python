@@ -14,3 +14,14 @@ class Rectangle:
 
     def get_perimeter(self):
         return 2 * (self.width + self.height)
+
+    def get_picture(self):
+        if self.width > 50 or self.height > 50:
+            return "Too big for picture"
+        return (("*" * self.width) + "\n") * self.height
+
+    def set_width(self, width):
+        self.width = abs(width)
+
+    def set_height(self, height):
+        self.height = abs(height)

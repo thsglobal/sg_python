@@ -30,3 +30,22 @@ def test_rectangle_negative_perimeter():
     assert Rectangle(-4, 5).get_perimeter() == 18
     assert Rectangle(4, -5).get_perimeter() == 18
     assert Rectangle(-4, -5).get_perimeter() == 18
+
+
+def test_rectangle_set_width():
+    rect = Rectangle(4,5)
+    assert rect.get_perimeter() == 18
+    rect.set_width(3)
+    assert rect.get_perimeter() == 16
+
+
+def test_rectangle_set_height():
+    rect = Rectangle(4,5)
+    assert rect.get_perimeter() == 18
+    rect.set_height(4)
+    assert rect.get_perimeter() == 16
+
+
+def test_rectangle_get_picture():
+    assert Rectangle(90,90).get_picture() == "Too big for picture"
+    assert Rectangle(3,3).get_picture() == "***\n***\n***\n"
